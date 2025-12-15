@@ -304,6 +304,7 @@ export default function DashboardPage() {
                                                                 onChange={async (e) => {
                                                                     const file = e.target.files?.[0];
                                                                     if (file) {
+                                                                        const formData = new FormData();
                                                                         formData.append('file', file);
                                                                         try {
                                                                             const res = await fetch(`${API_BASE}/api/upload`, {
