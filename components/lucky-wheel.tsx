@@ -556,15 +556,8 @@ function WheelTile({ text, image }: { text: string, image?: string }) {
 
     // Fallback Legacy Logic
     if (text === "mitos") {
-      const mitosImages = [
-        "/mitos/mitos_1.png",
-        "/mitos/mitos_2.png",
-        "/mitos/mitos_3.png",
-        "/mitos/mitos_4.png",
-        "/mitos/mitos_5.png"
-      ]
-      const randomIndex = Math.floor(Math.random() * mitosImages.length)
-      src = mitosImages[randomIndex]
+      // FORCE SAFE IMAGE to prevent broken images
+      src = "/assets/mitos-new.png"
     }
     else if (text === "scare") src = "/assets/scare.png"
     else if (text === "gladiator") src = "/assets/gladiator.png"

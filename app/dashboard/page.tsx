@@ -304,22 +304,28 @@ export default function DashboardPage() {
                                                                 onChange={async (e) => {
                                                                     const file = e.target.files?.[0];
                                                                     if (file) {
-                                                                        const formData = new FormData();
                                                                         formData.append('file', file);
                                                                         try {
                                                                             const res = await fetch(`${API_BASE}/api/upload`, {
                                                                                 method: 'POST',
                                                                                 body: formData,
                                                                             });
+
+                                                                            if (!res.ok) {
+                                                                                const errText = await res.text();
+                                                                                throw new Error(`Server Error ${res.status}: ${errText}`);
+                                                                            }
+
                                                                             const data = await res.json();
                                                                             if (data.success) {
                                                                                 handleUpdatePrize(idx, 'image', data.url);
+                                                                                toast.success("Image uploaded!");
                                                                             } else {
-                                                                                toast.error('Upload failed');
+                                                                                throw new Error(data.error || "Upload failed");
                                                                             }
-                                                                        } catch (err) {
+                                                                        } catch (err: any) {
                                                                             console.error(err);
-                                                                            toast.error('Upload error');
+                                                                            toast.error(`Upload Error: ${err.message}`);
                                                                         }
                                                                     }
                                                                 }}
