@@ -41,7 +41,9 @@ export function LuckyWheel({
   // If I change dashboard page to use relative "", then apiBase is "".
   // Then wsUrl becomes "ws". That's invalid.
   // So I should keep a fallback for the WS specifically.
-  const wsUrl = process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:3002'
+  // Determine WS URL: Prefer explicit env var, otherwise derive from HTTP URL, otherwise default to localhost.
+  const wsUrl = process.env.NEXT_PUBLIC_WS_URL ||
+    (apiBase ? apiBase.replace('https', 'wss').replace('http', 'ws') : 'ws://localhost:3002')
   const scrollRef = useRef<HTMLDivElement>(null)
 
   // State for Spin Queue and Sequence Control
