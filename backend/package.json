@@ -1,0 +1,26 @@
+{
+  "name": "tiktok-live-spin-backend",
+  "version": "1.0.0",
+  "description": "TikTok Live Spin Wheel Backend Logic",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.22.1",
+    "multer": "^2.0.2",
+    "tiktok-live-connector": "^1.2.3",
+    "ws": "^8.18.3"
+  },
+  "keywords": [
+    "tiktok",
+    "live",
+    "spin-wheel",
+    "websocket",
+    "backend"
+  ],
+  "author": "",
+  "license": "MIT"
+}
