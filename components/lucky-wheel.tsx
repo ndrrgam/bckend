@@ -238,15 +238,21 @@ export function LuckyWheel({
           // to ensure it feels like "landing" forward.
 
           // Find valid indices for this label in the original tiles array
-          const validIndices = tiles
+          // Robust matching: Try exact, then lowercase
+          let validIndices = tiles
             .map((t, i) => t.text === winnerLabel ? i : -1)
             .filter(i => i !== -1);
 
+          if (validIndices.length === 0) {
+            console.warn(`[LuckyWheel] Exact match failed for '${winnerLabel}'. Trying case-insensitive. Tiles:`, tiles.map(t => t.text));
+            validIndices = tiles
+              .map((t, i) => (t.text || "").toLowerCase() === (winnerLabel || "").toLowerCase() ? i : -1)
+              .filter(i => i !== -1);
+          }
+
           if (validIndices.length > 0) {
-            // Pick a random valid index from the pattern to keep it dynamic? 
-            // Or just the first one? Let's pick a random one to vary where it lands if pattern has multiples.
+            // Pick a random valid index
             const baseIndex = validIndices[Math.floor(Math.random() * validIndices.length)];
-            // Target index in the second set (offset by 30)
             const targetIndex = baseIndex + 30; // 30 is tiles.length
 
             // Estimate width logic
