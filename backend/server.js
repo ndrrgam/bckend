@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import { createServer } from 'http';
 import { WebSocketServer } from 'ws';
 import { WebcastPushConnection } from 'tiktok-live-connector';
@@ -11,6 +12,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
+app.use(cors());
 const server = createServer(app);
 const wss = new WebSocketServer({ server });
 
@@ -270,13 +272,7 @@ app.use('/uploads', express.static(join(__dirname, 'uploads')));
 app.use(express.json());
 
 // CORS
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  if (req.method === 'OPTIONS') res.sendStatus(200);
-  else next();
-});
+// CORS handled by cors middleware above
 
 // --- Endpoints ---
 

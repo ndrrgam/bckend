@@ -9,6 +9,7 @@
     "dev": "node server.js"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.22.1",
     "multer": "^2.0.2",
     "tiktok-live-connector": "^1.2.3",
