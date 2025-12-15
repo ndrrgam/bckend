@@ -26,7 +26,10 @@ interface ServerStatus {
     prizes: PrizeItem[]
 }
 
-const API_BASE = "" // Proxied via Next.js to localhost:3002
+const API_BASE = process.env.NEXT_PUBLIC_BACKEND_URL || ""
+
+// Debugging helper
+const debugUrl = API_BASE ? API_BASE : "Localhost (Relative Config)"
 
 export default function DashboardPage() {
     const [status, setStatus] = useState<ServerStatus | null>(null)
@@ -165,6 +168,7 @@ export default function DashboardPage() {
             <div className="flex flex-col items-center justify-center min-h-screen gap-4">
                 <h1 className="text-2xl font-bold text-red-500">Backend Offline</h1>
                 <p>Please make sure the backend server (port 3002) is running.</p>
+                <p className="text-xs text-neutral-500">Target Backend: {debugUrl || "Not Configured (Using Relative Path)"}</p>
                 <Button onClick={() => window.location.reload()}>Retry</Button>
             </div>
         )
