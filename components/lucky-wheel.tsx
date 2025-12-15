@@ -475,15 +475,24 @@ export function LuckyWheel({
                   <div className="text-emerald-400 text-xs font-bold uppercase tracking-widest text-center mb-3">Winning Items</div>
                   <div className="flex flex-wrap justify-center gap-2">
                     {displayedResults.map((result, index) => {
-                      // Logic to determine image source (duplicate of WheelTile logic for consistency)
-                      let imageSrc = result.image || "/assets/mitos-new.png";
+                      // Logic to determine image source
+                      let imageSrc = "/assets/mitos-new.png"; // Default fallback
+
                       if (result.image && result.image.startsWith('/uploads')) {
+                        // If it's an upload from backend
                         imageSrc = `${apiBase}${result.image}`;
-                      } else if (!result.image) {
-                        // Legacy map
-                        if (result.label === "scare") imageSrc = "/assets/scare.png"
-                        else if (result.label === "gladiator") imageSrc = "/assets/gladiator.png"
-                        else if (result.label === "fb") imageSrc = "/assets/fb.png"
+                      } else if (result.image && !result.image.startsWith('http')) {
+                        // If it's a relative path provided by backend config
+                        imageSrc = result.image;
+                      } else {
+                        // Legacy hardcoded logic based on label
+                        const labelLower = result.label.toLowerCase();
+                        if (labelLower.includes("scare")) imageSrc = "/assets/scare.png"
+                        else if (labelLower.includes("gladiator")) imageSrc = "/assets/gladiator.png"
+                        else if (labelLower.includes("fb")) imageSrc = "/assets/fb.png"
+                        else if (labelLower.includes("mitos")) {
+                          imageSrc = "/assets/mitos-new.png"
+                        }
                       }
 
                       const rarityColor = result.label === "gladiator" ? "border-emerald-400 shadow-emerald-500/20" :
