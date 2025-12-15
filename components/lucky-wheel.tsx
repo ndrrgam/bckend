@@ -474,21 +474,45 @@ export function LuckyWheel({
                 <div className="w-full">
                   <div className="text-emerald-400 text-xs font-bold uppercase tracking-widest text-center mb-3">Winning Items</div>
                   <div className="flex flex-wrap justify-center gap-2">
-                    {displayedResults.map((result, index) => (
-                      <span
-                        key={index}
-                        className={`
-                                            px-4 py-1.5 rounded-lg text-sm font-bold border backdrop-blur-sm shadow-lg
-                                            transform transition-all duration-300 hover:scale-105
-                                            animate-in zoom-in spin-in-3 duration-300
-                                            ${result.value > 0 ?
-                            'bg-emerald-500/20 border-emerald-500/50 text-emerald-300 shadow-emerald-900/20' :
-                            'bg-rose-500/20 border-rose-500/50 text-rose-300 shadow-rose-900/20'}
-                                        `}
-                      >
-                        {result.label}
-                      </span>
-                    ))}
+                    {displayedResults.map((result, index) => {
+                      // Logic to determine image source (duplicate of WheelTile logic for consistency)
+                      let imageSrc = result.image || "/assets/mitos-new.png";
+                      if (result.image && result.image.startsWith('/uploads')) {
+                        imageSrc = `${apiBase}${result.image}`;
+                      } else if (!result.image) {
+                        // Legacy map
+                        if (result.label === "scare") imageSrc = "/assets/scare.png"
+                        else if (result.label === "gladiator") imageSrc = "/assets/gladiator.png"
+                        else if (result.label === "fb") imageSrc = "/assets/fb.png"
+                      }
+
+                      const rarityColor = result.label === "gladiator" ? "border-emerald-400 shadow-emerald-500/20" :
+                        result.label === "mitos" ? "border-purple-500 shadow-purple-500/20" :
+                          result.value > 0 ? "border-cyan-400 shadow-cyan-500/20" :
+                            "border-rose-500 shadow-rose-500/20";
+
+                      return (
+                        <div key={index}
+                          className={`
+                                flex flex-col items-center justify-center
+                                w-24 h-28 bg-gray-900/80 rounded-xl border-2 ${rarityColor}
+                                shadow-lg backdrop-blur-sm p-2 gap-1
+                                animate-in zoom-in spin-in-3 duration-500
+                             `}
+                        >
+                          <div className="flex-1 w-full flex items-center justify-center overflow-hidden">
+                            <img
+                              src={imageSrc}
+                              alt={result.label}
+                              className="w-full h-full object-contain filter drop-shadow-md"
+                            />
+                          </div>
+                          <span className="text-[10px] font-bold text-white uppercase tracking-wider text-center leading-tight">
+                            {result.label}
+                          </span>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               )}
